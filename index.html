@@ -82,35 +82,36 @@
                         stroke-dasharray="32.4" stroke-dashoffset="32.4" />
                 </g>
             </svg>
-            <H3 id="loadtext">正在加载页面[1/11]</H3>
+            <H3 id="loadtext">正在加载页面</H3>
         </div>
     </div>
     <script>
-        document.getElementById("loadtext").innerText = "正在下载Ruffle脚本[2/11]"
+        document.getElementById("loadtext").innerText = "极速加载已启用"
     </script>
-    <script src="https://cdn.jsdelivr.net/gh/qinlili23333/ruffle-voicesea@main/ruffle.js"></script>
+    <script async src="https://cdn.jsdelivr.net/gh/qinlili23333/ruffle-voicesea@main/ruffle.js"></script>
     <script>
         var fullblob;
         var blob0;
         var blob1;
-        document.getElementById("loadtext").innerText = "正在下载文件分段1[3/11]";
         fetch("https://cdn.jsdelivr.net/gh/qinlili23333/ruffle-voicesea@main/swfpack0").then(res => res.blob().then(blob => {
-            document.getElementById("loadtext").innerText = "正在把文件分段1写入缓存[4/11]";
             blob0 = blob;
-            document.getElementById("loadtext").innerText = "正在下载文件分段2[5/11]";
-            fetch("https://cdn.jsdelivr.net/gh/qinlili23333/ruffle-voicesea@main/swfpack1").then(res => res.blob().then(blob => {
-                document.getElementById("loadtext").innerText = "正在把文件分段2写入缓存[6/11]";
-                blob1 = blob;
-                document.getElementById("loadtext").innerText = "正在合并文件[7/11]";
-                fullblob = new Blob([blob0, blob1], { type: "application/x-shockwave-flash" });
-                loadswf();
-            }))
+            checkLoad();
         }))
+        fetch("https://cdn.jsdelivr.net/gh/qinlili23333/ruffle-voicesea@main/swfpack1").then(res => res.blob().then(blob => {
+            blob1 = blob;
+            checkLoad();
+        }))
+        function checkLoad(){
+            if(blob0||blob1){
+            fullblob = new Blob([blob0, blob1], { type: "application/x-shockwave-flash" });
+            loadswf();
+            }
+        }
         function loadswf() {
-            document.getElementById("loadtext").innerText = "正在创建界面[8/11]";
+            document.getElementById("loadtext").innerText = "正在创建界面";
             window.RufflePlayer = window.RufflePlayer || {};
             let ruffle = window.RufflePlayer.newest();
-            document.getElementById("loadtext").innerText = "正在下载Ruffle二进制[9/11]";
+            document.getElementById("loadtext").innerText = "正在下载Ruffle二进制";
             let player = ruffle.createPlayer();
             player.config = {
                 "autoplay": "auto",
@@ -122,9 +123,9 @@
             let container = document.getElementById("container");
             player.id = "player";
             container.appendChild(player);
-            document.getElementById("loadtext").innerText = "正在读取文件[10/11]";
+            document.getElementById("loadtext").innerText = "正在读取文件";
             player.load(window.URL.createObjectURL(fullblob)).then(() => {
-                document.getElementById("loadtext").innerText = "正在渲染界面大约需要半分钟[11/11]";
+                document.getElementById("loadtext").innerText = "正在渲染界面大约需要半分钟";
                 setTimeout(hideoverlay, 1500)
             }).catch((e) => {
                 alert("加载失败！原因为" + e);
