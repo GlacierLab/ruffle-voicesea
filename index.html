@@ -102,7 +102,7 @@
             checkLoad();
         }))
         function checkLoad(){
-            if(blob0||blob1){
+            if(blob0&&blob1){
             fullblob = new Blob([blob0, blob1], { type: "application/x-shockwave-flash" });
             loadswf();
             }
