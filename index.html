@@ -29,89 +29,51 @@
 <body id="container" style="width:100%;height:100%;">
     <div style="position:fixed;z-index:999;height:100%;width:100%;text-align:center;background-color: rgba(200,200,200,1); top: 0px;bottom: 0px;left: 0px;right: 0px;"
         id="loginOverlay">
-        <div style="position: absolute;	left: 50%;top: 50%;transform: translate(-50%,-50%);">
-            <svg xmlns="http://www.w3.org/2000/svg" width="128px" height="128px" version="1" viewBox="0 0 16 16"
-                id="loadsvg">
-                <style>
-                    @keyframes rotate {
-                        0% {
-                            transform: rotate(0deg)
-                        }
-
-                        to {
-                            transform: rotate(360deg)
-                        }
-                    }
-
-                    @keyframes fillunfill {
-                        0% {
-                            stroke-dashoffset: 32.3
-                        }
-
-                        50% {
-                            stroke-dashoffset: 0
-                        }
-
-                        to {
-                            stroke-dashoffset: -31.9
-                        }
-                    }
-
-                    @keyframes rot {
-                        0% {
-                            transform: rotate(0deg)
-                        }
-
-                        to {
-                            transform: rotate(-360deg)
-                        }
-                    }
-
-                    @keyframes colors {
-
-                        0%,
-                        to {
-                            stroke: #e87a90
-                        }
-                    }
-                </style>
-                <g
-                    style="animation-duration:1568.63ms;animation-iteration-count:infinite;animation-name:rotate;animation-timing-function:linear;transform-origin:50% 50%;width:16px;height:16px">
-                    <path fill="none" d="M8 1.125A6.875 6.875 0 1 1 1.125 8" stroke-width="1.25" stroke-linecap="square"
-                        style="animation-duration:1333ms,5332ms,5332ms;animation-fill-mode:forwards;animation-iteration-count:infinite,infinite,infinite;animation-name:fillunfill,rot,colors;animation-play-state:running,running,running;animation-timing-function:cubic-bezier(.4,0,.2,1),steps(4),linear;transform-origin:50% 50%"
-                        stroke-dasharray="32.4" stroke-dashoffset="32.4" />
-                </g>
-            </svg>
-            <H3 id="loadtext">正在加载页面</H3>
-        </div>
+        <H3 style="position: absolute;	left: 50%;top: 50%;transform: translate(-50%,-50%);" id="loadtext">正在加载页面...</H3>
     </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/gh/qinlili23333/SakiProgress@1.0.3/SakiProgress.min.js"></script>
     <script>
-        document.getElementById("loadtext").innerText = "极速加载已启用"
+        SakiProgress.init();
+        SakiProgress.showDiv();
     </script>
-    <script async src="https://cdn.jsdelivr.net/gh/qinlili23333/ruffle-voicesea@main/ruffle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/qinlili23333/ruffle-voicesea@main/ruffle.min.js"></script>
     <script>
+        var percent = 0;
+        var p = function (add) {
+            percent = percent + add;
+            SakiProgress.setPercent(percent)
+        };
+        var t = function(text){SakiProgress.setText(text)};
+        t("正在下载文件分块（共2块）");
+        p(5);
         var fullblob;
         var blob0;
         var blob1;
         fetch("https://cdn.jsdelivr.net/gh/qinlili23333/ruffle-voicesea@main/swfpack0").then(res => res.blob().then(blob => {
             blob0 = blob;
+            p(20);
             checkLoad();
         }))
         fetch("https://cdn.jsdelivr.net/gh/qinlili23333/ruffle-voicesea@main/swfpack1").then(res => res.blob().then(blob => {
             blob1 = blob;
+            p(20);
             checkLoad();
         }))
-        function checkLoad(){
-            if(blob0&&blob1){
-            fullblob = new Blob([blob0, blob1], { type: "application/x-shockwave-flash" });
-            loadswf();
+        function checkLoad() {
+            if (blob0 && blob1) {
+                t("正在合并文件")
+                fullblob = new Blob([blob0, blob1], { type: "application/x-shockwave-flash" });
+                p(5);
+                loadswf();
             }
         }
         function loadswf() {
-            document.getElementById("loadtext").innerText = "正在创建界面";
+            t("正在创建界面");
             window.RufflePlayer = window.RufflePlayer || {};
             let ruffle = window.RufflePlayer.newest();
-            document.getElementById("loadtext").innerText = "正在下载Ruffle二进制";
+            p(10)
+            t("正在下载Ruffle二进制");
             let player = ruffle.createPlayer();
             player.config = {
                 "autoplay": "auto",
@@ -123,17 +85,21 @@
             let container = document.getElementById("container");
             player.id = "player";
             container.appendChild(player);
-            document.getElementById("loadtext").innerText = "正在读取文件";
+            p(15)
+            t("正在读取文件");
             player.load(window.URL.createObjectURL(fullblob)).then(() => {
-                document.getElementById("loadtext").innerText = "正在渲染界面大约需要半分钟";
-                setTimeout(hideoverlay, 1500)
+                p(5)
+                t("正在渲染界面大约需要半分钟");
+                setTimeout(function () {
+                    document.getElementById("loginOverlay").style.display = "none";
+                    p(20);
+                    SakiProgress.hideDiv();
+                }, 1500)
             }).catch((e) => {
                 alert("加载失败！原因为" + e);
             });
         }
-        function hideoverlay() {
-            document.getElementById("loginOverlay").style.display = "none"
-        }
+
     </script>
 </body>
 
