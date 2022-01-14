@@ -37,7 +37,7 @@
         SakiProgress.init();
         SakiProgress.showDiv();
     </script>
-    <script src="https://cdn.jsdelivr.net/gh/qinlili23333/ruffle-voicesea@main/ruffle.min.js"></script>
+    <script src="https://voicesea.qinlili.bid/ruffle.js"></script>
     <script>
         var percent = 0;
         var p = function (add) {
@@ -50,12 +50,12 @@
         var fullblob;
         var blob0;
         var blob1;
-        fetch("https://cdn.jsdelivr.net/gh/qinlili23333/ruffle-voicesea@main/swfpack0").then(res => res.blob().then(blob => {
+        fetch("https://voicesea.qinlili.bid/swfpack0").then(res => res.blob().then(blob => {
             blob0 = blob;
             p(20);
             checkLoad();
         }))
-        fetch("https://cdn.jsdelivr.net/gh/qinlili23333/ruffle-voicesea@main/swfpack1").then(res => res.blob().then(blob => {
+        fetch("https://voicesea.qinlili.bid/swfpack1").then(res => res.blob().then(blob => {
             blob1 = blob;
             p(20);
             checkLoad();
