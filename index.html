@@ -50,12 +50,12 @@
         var fullblob;
         var blob0;
         var blob1;
-        fetch("https://voicesea.qinlili.bid/swfpack0").then(res => res.blob().then(blob => {
+        fetch("https://voicesea.qinlili.bid/swfpack0.bin").then(res => res.blob().then(blob => {
             blob0 = blob;
             p(20);
             checkLoad();
         }))
-        fetch("https://voicesea.qinlili.bid/swfpack1").then(res => res.blob().then(blob => {
+        fetch("https://voicesea.qinlili.bid/swfpack1.bin").then(res => res.blob().then(blob => {
             blob1 = blob;
             p(20);
             checkLoad();
