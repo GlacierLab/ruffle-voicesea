@@ -1,106 +1,98 @@
 <!DOCTYPE html>
 <html>
-<title>VoicesFromTheSea-Online</title>
+<title>海之声-VoicesFromTheSea 由 琴梨梨 & Ruffle 驱动</title>
 
 <head>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <link rel="icon" href="./favicon.jpg">
     <style>
         body {
             -webkit-font-smoothing: subpixel-antialiased;
-        }
-
-        .unselect {
+            margin: 0px;
             -webkit-user-select: none;
             user-select: none;
+        }
+
+        @media (max-width: 700px) {
+            #floatTop {
+                flex-direction: column !important;
+            }
+        }
+
+        .topBtn {
+            flex-direction: row;
+            display: flex;
+            right: 0px;
+            float: right;
+            height: auto;
+            margin-left: 5px;
+            margin-right: 5px;
+            padding-left: 5px;
+            padding-right: 5px;
+            width: auto;
+            transition: background-color 0.2s, transform 0.3s ease-in-out;
+        }
+
+        .topBtn:hover {
+            transform: scale(1.1, 1.1);
+            background-color: #cccccc;
+        }
+
+        .topBtn:active {
+            background-color: #999999
+        }
+
+        .topBtnIcon {
+            margin: 2px;
+            width: 28px;
+            height: 28px;
+        }
+
+        .topBtnText {
+            margin: 0px;
         }
 
         #player {
             width: auto;
             height: auto;
             position: absolute;
-            top: 0px;
+            top: 32px;
             bottom: 0px;
             left: 0px;
             right: 0px;
         }
+
+        #savePanel {
+            z-index: 999;
+            position: fixed;
+            height: auto;
+            min-height: 32px;
+            width: auto;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            padding: 5px;
+            background-color: white;
+            box-shadow: 0px -2px 2px 1px rgba(0, 0, 0, 0.5);
+        }
     </style>
+    <script async src="./index.core.js"></script>
+    <script async="" src="https://qinlili.bid/jslib/Bella.js"></script>
 </head>
 
-<body id="container" style="width:100%;height:100%;">
-    <div style="position:fixed;z-index:999;height:100%;width:100%;text-align:center;background-color: rgba(200,200,200,1); top: 0px;bottom: 0px;left: 0px;right: 0px;"
-        id="loginOverlay">
-        <H3 style="position: absolute;	left: 50%;top: 50%;transform: translate(-50%,-50%);" id="loadtext">正在加载页面...</H3>
+<body>
+    <div id="floatTop"
+        style="z-index: 999;position: fixed;display: flex;flex-direction: row;height:auto;width:auto;left:0px;right:0px;padding-left: 5px;padding-right:5px;box-shadow: 0px 2px 2px 1px rgba(0,0,0,0.5);background-color:white;">
+        <svg id="loadingSvg" class="topBtnIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="#e87a90">
+            <path opacity=".25"
+                d="M16 0 A16 16 0 0 0 16 32 A16 16 0 0 0 16 0 M16 4 A12 12 0 0 1 16 28 A12 12 0 0 1 16 4" />
+            <path d="M16 0 A16 16 0 0 1 32 16 L28 16 A12 12 0 0 0 16 4z">
+                <animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="0.8s"
+                    repeatCount="indefinite" />
+            </path>
+        </svg>
+        <H2 id="title" style="margin:0px;padding-right:20px;">正在加载页面</H2>
     </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/gh/qinlili23333/SakiProgress@1.0.3/SakiProgress.min.js"></script>
-    <script>
-        SakiProgress.init();
-        SakiProgress.showDiv();
-    </script>
-    <script src="https://voicesea.qinlili.bid/ruffle.js"></script>
-    <script>
-        var percent = 0;
-        var p = function (add) {
-            percent = percent + add;
-            SakiProgress.setPercent(percent)
-        };
-        var t = function(text){SakiProgress.setText(text)};
-        t("正在下载文件分块（共2块）");
-        p(5);
-        var fullblob;
-        var blob0;
-        var blob1;
-        fetch("https://voicesea.qinlili.bid/swfpack0.bin.wasm").then(res => res.blob().then(blob => {
-            blob0 = blob;
-            p(20);
-            checkLoad();
-        }))
-        fetch("https://voicesea.qinlili.bid/swfpack1.bin.wasm").then(res => res.blob().then(blob => {
-            blob1 = blob;
-            p(20);
-            checkLoad();
-        }))
-        function checkLoad() {
-            if (blob0 && blob1) {
-                t("正在合并文件")
-                fullblob = new Blob([blob0, blob1], { type: "application/x-shockwave-flash" });
-                p(5);
-                loadswf();
-            }
-        }
-        function loadswf() {
-            t("正在创建界面");
-            window.RufflePlayer = window.RufflePlayer || {};
-            let ruffle = window.RufflePlayer.newest();
-            p(10)
-            t("正在下载Ruffle二进制");
-            let player = ruffle.createPlayer();
-            player.config = {
-                "autoplay": "auto",
-                "unmuteOverlay": "hidden",
-                "letterbox": "on",
-                "warnOnUnsupportedContent": false,
-                "contextMenu": false,
-            }
-            let container = document.getElementById("container");
-            player.id = "player";
-            container.appendChild(player);
-            p(15)
-            t("正在读取文件");
-            player.load(window.URL.createObjectURL(fullblob)).then(() => {
-                p(5)
-                t("正在渲染界面大约需要半分钟");
-                setTimeout(function () {
-                    document.getElementById("loginOverlay").style.display = "none";
-                    p(20);
-                    SakiProgress.hideDiv();
-                }, 1500)
-            }).catch((e) => {
-                alert("加载失败！原因为" + e);
-            });
-        }
-
-    </script>
 </body>
 
 </html>
