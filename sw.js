@@ -3,9 +3,6 @@ var VERSION = '20220122'              // Version of the off-line cache (change t
 var CACHE_NAME = APP_PREFIX + VERSION
 var URLS = [
     '/',
-    '/index.html',
-    '/ruffle/ruffle.js',
-    'swf.woff'
 ]
 
 // Respond with cached resources
