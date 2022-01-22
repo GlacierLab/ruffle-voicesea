@@ -1,4 +1,4 @@
-const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+﻿const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
 //接管新标签页打开
 const rawOpen = window.open;
 window.open = function (url, target, feature) {
