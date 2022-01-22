@@ -1,12 +1,11 @@
-console.log("Core JS Loaded Async!");
+const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
 //接管新标签页打开
-rawOpen = window.open;
+const rawOpen = window.open;
 window.open = function (url, target, feature) {
     confirm("即将在新标签页打开" + url + "，你想要继续吗？") && rawOpen(url, target, feature);
 }
 
 var autoSave = function () {
-    console.log("save!")
     document.body.dispatchEvent((new Event("unload", { "bubbles": true, "cancelable": false })))
 }
 
@@ -50,6 +49,7 @@ async function init() {
     if (navigator.serviceWorker && !navigator.serviceWorker.controller) {
         topTitle("安装Service Worker", true);
         await navigator.serviceWorker.register('./sw.js', { scope: '/' });
+        await sleep(5000)
         document.location.reload();
     }
     if (navigator.userAgent.indexOf("WOW64") > 1) {
@@ -59,7 +59,7 @@ async function init() {
     topBtn(iconPack.save, "存档管理").addEventListener("click", function () {
         player.pause();
         player.removeEventListener("click", autoSave);
-        let currentSave = btoa(JSON.stringify(localStorage));
+        var currentSave = btoa(JSON.stringify(localStorage));
         if (!document.getElementById("savePanel")) {
             var savePanel = document.createElement("div");
             savePanel.id = "savePanel";
@@ -77,7 +77,11 @@ async function init() {
                     try {
                         const newSave = JSON.parse(atob(document.getElementById("save").value));
                         if (confirm("新存档解析成功，你确定要覆盖当前存档吗？")) {
-                            localStorage = newSave;
+                            let localStorageTemp = newSave;
+                            let keys = Object.keys(localStorageTemp);
+                            for (var i = 0; keys[i]; i++) {
+                                localStorage[keys[i]] = localStorageTemp[keys[i]];
+                            }
                             topTitle("应用新存档", true);
                             document.location.reload();
                         } else {
