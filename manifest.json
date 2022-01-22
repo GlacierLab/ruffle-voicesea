@@ -14,7 +14,7 @@
     "display": "standalone",
     "id": "/index.html",
     "lang": "cn",
-    "orientation": "portrait",
+    "orientation": "landscape-primary",
     "background_color": "#46B0EC",
     "theme_color": "#46B0EC",
     "description": "海之声基于Ruffle的在线移植版"
