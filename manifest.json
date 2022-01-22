@@ -12,6 +12,10 @@
     ],
     "start_url": "/index.html",
     "display": "standalone",
+    "display_override": [
+        "fullscreen",
+        "minimal-ui"
+    ],
     "id": "/index.html",
     "lang": "cn",
     "orientation": "landscape-primary",
