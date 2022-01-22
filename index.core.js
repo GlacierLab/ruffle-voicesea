@@ -130,7 +130,7 @@ async function init() {
     let player = ruffle.createPlayer();
     player.config = {
         "autoplay": "on",
-        //"unmuteOverlay": "hidden",
+        "unmuteOverlay": "hidden",
         "letterbox": "off",
         "warnOnUnsupportedContent": false,
         "contextMenu": false,
@@ -139,7 +139,7 @@ async function init() {
     player.id = "player";
     player.addEventListener("click", autoSave)
     document.body.appendChild(player);
-    topTitle("下载游戏资源（20.9M）", true);
+    topTitle("下载游戏资源（26.7M）", true);
     URL.createObjectURL(await (await fetch("./swf.woff")).blob())
     try {
         await player.load("./swf.woff");
