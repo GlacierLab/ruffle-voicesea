@@ -1,5 +1,5 @@
 ﻿var APP_PREFIX = '海之声'     // Identifier for this app (this needs to be consistent across every cache update)
-var VERSION = '20220122V2'              // Version of the off-line cache (change this value everytime you want to update cache)
+var VERSION = '20220122V3'              // Version of the off-line cache (change this value everytime you want to update cache)
 var CACHE_NAME = APP_PREFIX + VERSION
 var URLS = [
     '/',

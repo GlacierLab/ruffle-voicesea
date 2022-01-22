@@ -76,14 +76,17 @@ async function init() {
                     player.play();
                 } else {
                     try {
-                        const newSave = JSON.parse(atob(document.getElementById("save").value));
                         if (confirm("新存档解析成功，你确定要覆盖当前存档吗？")) {
-                            let localStorageTemp = newSave;
-                            let keys = Object.keys(localStorageTemp);
-                            for (var i = 0; keys[i]; i++) {
-                                localStorage[keys[i]] = localStorageTemp[keys[i]];
-                            }
                             topTitle("应用新存档", true);
+                            window.addEventListener("unload", function (e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                let localStorageTemp = JSON.parse(atob(document.getElementById("save").value));
+                                let keys = Object.keys(localStorageTemp);
+                                for (var i = 0; keys[i]; i++) {
+                                    localStorage[keys[i]] = localStorageTemp[keys[i]];
+                                }
+                            }, true);
                             document.location.reload();
                         } else {
                             savePanel.style.display = "none";
