@@ -1,0 +1,18 @@
+{
+    "dir": "ltr",
+    "scope": "/",
+    "name": "海之声-VoicesFromTheSea",
+    "short_name": "海之声",
+    "icons": [{
+        "src": "icon.png",
+        "sizes": "435x435",
+        "type": "image/png"
+      }],
+    "start_url": "/index.html",
+    "display": "standalone",
+    "lang": "cn",
+    "orientation": "portrait",
+    "background_color": "#46B0EC",
+    "theme_color": "#46B0EC",
+    "description": "海之声基于Ruffle的在线移植版"
+  }
