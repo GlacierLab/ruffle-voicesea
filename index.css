@@ -1,0 +1,84 @@
+body {
+    -webkit-font-smoothing: subpixel-antialiased;
+    margin: 0px;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+@media (max-width: 700px) {
+    #floatTop {
+        flex-direction: column !important;
+    }
+}
+
+#floatTop {
+    z-index: 999;
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    width: auto;
+    left: 0px;
+    right: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+    box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.5);
+    background-color: white;
+}
+
+.topBtn {
+    flex-direction: row;
+    display: flex;
+    right: 0px;
+    float: right;
+    height: auto;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: auto;
+    transition: background-color 0.2s, transform 0.3s ease-in-out;
+}
+
+.topBtn:hover {
+    transform: scale(1.1, 1.1);
+    background-color: #cccccc;
+}
+
+.topBtn:active {
+    background-color: #999999
+}
+
+.topBtnIcon {
+    margin: 2px;
+    width: 28px;
+    height: 28px;
+}
+
+.topBtnText {
+    margin: 0px;
+}
+
+#player {
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 32px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+
+#savePanel {
+    z-index: 999;
+    position: fixed;
+    height: auto;
+    min-height: 32px;
+    width: auto;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    padding: 5px;
+    background-color: white;
+    box-shadow: 0px -2px 2px 1px rgba(0, 0, 0, 0.5);
+}

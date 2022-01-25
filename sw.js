@@ -1,17 +1,15 @@
-﻿var APP_PREFIX = '海之声'     // Identifier for this app (this needs to be consistent across every cache update)
-var VERSION = '20220122V3'              // Version of the off-line cache (change this value everytime you want to update cache)
+﻿var APP_PREFIX = '海之声'
+var VERSION = '20220125'
 var CACHE_NAME = APP_PREFIX + VERSION
 var URLS = [
     '/',
 ]
-
-// Respond with cached resources
-self.addEventListener('fetch', function (event) {
-    if (event.request.method == "GET"&&(event.request.url.indexOf("http")==0)) {
+self.addEventListener('fetch', event => {
+    if (event.request.method == "GET" && (event.request.url.indexOf("http") == 0)) {
         event.respondWith(
-            caches.open(CACHE_NAME).then(async function (cache) {
-                return cache.match(event.request).then(function (response) {
-                    return response || fetch(event.request).then(function (response) {
+            caches.open(CACHE_NAME).then(async cache => {
+                return cache.match(event.request).then(response => {
+                    return response || fetch(event.request).then(response => {
                         console.log('file is not cached, fetching : ' + event.request.url)
                         cache.put(event.request, response.clone());
                         console.log('file cached : ' + event.request.url)
@@ -25,29 +23,23 @@ self.addEventListener('fetch', function (event) {
         event.respondWith(fetch(event.request))
     }
 });
-// Cache resources
-self.addEventListener('install', function (e) {
+self.addEventListener('install', (e) => {
     e.waitUntil(
-        caches.open(CACHE_NAME).then(function (cache) {
+        caches.open(CACHE_NAME).then(cache => {
             console.log('installing cache : ' + CACHE_NAME)
             return cache.addAll(URLS)
         })
     )
 })
-
-// Delete outdated caches
-self.addEventListener('activate', function (e) {
+self.addEventListener('activate', (e) => {
     e.waitUntil(
-        caches.keys().then(function (keyList) {
-            // `keyList` contains all cache names under your username.github.io
-            // filter out ones that has this app prefix to create white list
-            var cacheWhitelist = keyList.filter(function (key) {
+        caches.keys().then((keyList) => {
+            var cacheWhitelist = keyList.filter(key => {
                 return key.indexOf(APP_PREFIX)
             })
-            // add current cache name to white list
             cacheWhitelist.push(CACHE_NAME)
 
-            return Promise.all(keyList.map(function (key, i) {
+            return Promise.all(keyList.map((key, i) => {
                 if (cacheWhitelist.indexOf(key) === -1) {
                     console.log('deleting cache : ' + keyList[i])
                     return caches.delete(keyList[i])

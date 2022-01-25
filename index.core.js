@@ -1,12 +1,12 @@
-﻿const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+﻿const sleep = delay => new Promise((resolve) => setTimeout(resolve, delay))
 //接管新标签页打开
 const rawOpen = window.open;
-window.open = function (url, target, feature) {
+window.open = (url, target, feature) => {
     confirm("即将在新标签页打开" + url + "，你想要继续吗？") && rawOpen(url, target, feature);
 }
 
-var autoSave = function () {
-    document.body.dispatchEvent((new Event("unload", { "bubbles": true, "cancelable": false })))
+var autoSave = () => {
+    document.body.dispatchEvent(new Event("unload", { "bubbles": true, "cancelable": false }))
 }
 
 
@@ -45,7 +45,7 @@ const iconPack = {
     fullscreen: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDQ4IDQ4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgZmlsbD0id2hpdGUiIGZpbGwtb3BhY2l0eT0iMC4wMSIvPjxwYXRoIGQ9Ik02IDZMMTYgMTUuODk5NSIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik02IDQxLjg5OTVMMTYgMzIiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNNDIuMDAwMSA0MS44OTk1TDMyLjEwMDYgMzIiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNNDEuODk5NSA2TDMyIDE1Ljg5OTUiIHN0cm9rZT0iIzMzMyIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMzMgNkg0MlYxNSIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik00MiAzM1Y0MkgzMyIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xNSA0Mkg2VjMzIiBzdHJva2U9IiMzMzMiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBhdGggZD0iTTYgMTVWNkgxNSIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg=="
 }
 
-async function init() {
+const init = async () => {
     topTitle("检查Service Worker", true);
     if (navigator.serviceWorker && !navigator.serviceWorker.controller) {
         topTitle("安装Service Worker", true);
@@ -57,7 +57,7 @@ async function init() {
         alert("你正在64位操作系统上使用32位浏览器!\n为了更快的访问速度请改用64位浏览器!")
     }
     topTitle("正在加载菜单", true);
-    topBtn(iconPack.save, "存档管理").addEventListener("click", function () {
+    topBtn(iconPack.save, "存档管理").addEventListener("click", () => {
         player.pause();
         player.removeEventListener("click", autoSave);
         var currentSave = btoa(JSON.stringify(localStorage));
@@ -69,16 +69,21 @@ async function init() {
             document.body.appendChild(savePanel);
             var applyBtn = document.getElementById("applyBtn");
             applyBtn.src = iconPack.done;
-            applyBtn.addEventListener("click", function () {
+            applyBtn.addEventListener("click", () => {
                 if (document.getElementById("save").value == currentSave) {
                     savePanel.style.display = "none";
                     player.addEventListener("click", autoSave);
                     player.play();
                 } else {
+                    const hideSave = () => {
+                        savePanel.style.display = "none";
+                        player.addEventListener("click", autoSave);
+                        player.play();
+                    }
                     try {
                         if (confirm("新存档解析成功，你确定要覆盖当前存档吗？")) {
                             topTitle("应用新存档", true);
-                            window.addEventListener("unload", function (e) {
+                            window.addEventListener("unload", e => {
                                 e.preventDefault();
                                 e.stopPropagation();
                                 let localStorageTemp = JSON.parse(atob(document.getElementById("save").value));
@@ -89,15 +94,11 @@ async function init() {
                             }, true);
                             document.location.reload();
                         } else {
-                            savePanel.style.display = "none";
-                            player.addEventListener("click", autoSave);
-                            player.play();
+                            hideSave();
                         }
                     } catch (e) {
                         alert("存档解析失败，请检查存档是否完整\n本地存档未进行任何改动")
-                        savePanel.style.display = "none";
-                        player.addEventListener("click", autoSave);
-                        player.play();
+                        hideSave();
                     }
                 }
             })
@@ -107,33 +108,25 @@ async function init() {
         var saveInput = document.getElementById("save");
         saveInput.value = currentSave;
     });
-    topBtn(iconPack.fullscreen, "全屏").addEventListener("click", async function () {
-        await document.getElementById("player").requestFullscreen();
-    })
-    topBtn(iconPack.clean, "清理缓存").addEventListener("click", async function () {
+    topBtn(iconPack.fullscreen, "全屏").addEventListener("click", async () => { await document.getElementById("player").requestFullscreen(); })
+    topBtn(iconPack.clean, "清理缓存").addEventListener("click", async () => {
         topTitle("清理缓存中", true);
-        await caches.keys().then(async function (names) {
+        await caches.keys().then(async names => {
             for (let name of names)
                 await caches.delete(name);
         });
         topTitle("清理完成，刷新中", true);
         document.location.reload();
     });
-    topBtn(iconPack.info, "关于").addEventListener("click", function () {
-        rawOpen("./about.html", "_blank")
-    })
+    topBtn(iconPack.info, "关于").addEventListener("click", () => { rawOpen("./about.html", "_blank") })
     topTitle("加载Ruffle", true);
     let ruffleScript = document.createElement("script");
     document.body.appendChild(ruffleScript);
-    var onRuffleLoad = function () { };
-    function waitRuffleLoad() {
-        return new Promise(resolve => {
-            onRuffleLoad = function () {
-                resolve();
-            }
-        });
+    var onRuffleLoad = () => { };
+    const waitRuffleLoad = () => {
+        return new Promise(resolve => { onRuffleLoad = () => { resolve(); } });
     }
-    ruffleScript.onload = function () { onRuffleLoad(); };
+    ruffleScript.onload = () => { onRuffleLoad(); };
     ruffleScript.src = "./ruffle/ruffle.js";
     await waitRuffleLoad();
     window.RufflePlayer = window.RufflePlayer || {};
@@ -159,5 +152,5 @@ async function init() {
     } catch (e) {
         alert("加载失败!原因为" + e);
     }
-}
+};
 init();
