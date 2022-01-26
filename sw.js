@@ -1,8 +1,16 @@
 ﻿var APP_PREFIX = '海之声'
-var VERSION = '20220125'
+var VERSION = '20220126'
+var VERSION_AZUSA_PATCH_USE = '20220125'
+var AZUSA_PATCH_SKIP_LIST = [
+    './swf.woff',
+    './favicon.jpg',
+    './manifest.json',
+    'https://qinlili.bid/jslib/Bella.js'
+]
 var CACHE_NAME = APP_PREFIX + VERSION
+var AZUSA_CACHE = APP_PREFIX + VERSION_AZUSA_PATCH_USE
 var URLS = [
-    '/',
+    './index.html',
 ]
 self.addEventListener('fetch', event => {
     if (event.request.method == "GET" && (event.request.url.indexOf("http") == 0)) {
@@ -23,15 +31,27 @@ self.addEventListener('fetch', event => {
         event.respondWith(fetch(event.request))
     }
 });
-self.addEventListener('install', (e) => {
+self.addEventListener('install', e => {
     e.waitUntil(
-        caches.open(CACHE_NAME).then(cache => {
+        caches.open(CACHE_NAME).then(async cache => {
             console.log('installing cache : ' + CACHE_NAME)
+            if ((await caches.has(AZUSA_CACHE))) {
+                console.log("Found Old Cache! Azusa Patch Working...");
+                caches.open(AZUSA_CACHE).then(oldCache => {
+                    AZUSA_PATCH_SKIP_LIST.forEach(async url => {
+                        let tempResponse = await oldCache.match(url);
+                        if (tempResponse) {
+                            console.log("Azusa Success Transfer Old Cache : " + url)
+                            cache.put(url, tempResponse);
+                        }
+                    })
+                })
+            }
             return cache.addAll(URLS)
         })
     )
 })
-self.addEventListener('activate', (e) => {
+self.addEventListener('activate', e => {
     e.waitUntil(
         caches.keys().then((keyList) => {
             var cacheWhitelist = keyList.filter(key => {
