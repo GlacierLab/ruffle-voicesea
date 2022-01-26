@@ -26,6 +26,11 @@ body {
     background-color: white;
 }
 
+.loadTitle {
+    flex-direction: row;
+    display: flex;
+}
+
 .topBtn {
     flex-direction: row;
     display: flex;
