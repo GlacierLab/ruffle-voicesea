@@ -127,7 +127,7 @@ const init = async () => {
         return new Promise(resolve => { onRuffleLoad = () => { resolve(); } });
     }
     ruffleScript.onload = () => { onRuffleLoad(); };
-    ruffleScript.src = "https://npm.elemecdn.com/@ruffle-rs/ruffle/ruffle.js";
+    ruffleScript.src = "./ruffle/ruffle.js";
     await waitRuffleLoad();
     window.RufflePlayer = window.RufflePlayer || {};
     let ruffle = window.RufflePlayer.newest();
